@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}MyBlog | Blog{% endblock title %}
+{% block blogactive %}active{% endblock blogactive %}
+{% block showfooter %}d-none{% endblock showfooter %}
+
+{% comment 'css' %}
+  {% block css %}
+    <style>
+      .container{
+        min-height: 100vh;
+      }
+    </style>
+  {% endblock css %}
+{% endcomment %}
+
+{% block body %}
+    <h1 class="text-center my-3">Welcome to MyBlog</h1>
+    <div class="container my-4">
+      <h2 class="my-3">Find your blogs here</h2>
+      {% for blog in blogs %}
+          <div class="media border p-3 my-3 rounded shadow" style="background-color:lightgray;">
+            {% comment 'Author`s Picture' %}
+            <img src="{% static 'img/profile.jpg' %}" alt="Author" class="mr-3 mt-3 rounded-circle" style="width:60px;">{% endcomment %}
+            <div class="media-body">
+              <h3><a href="/blogpost/{{blog.slug}}" class="text-dark text-decoration-none">{{blog.title}}</a> <small><i>Posted by {{blog.author}} on {{blog.datetime}}</i></small></h3>
+              <p>{{blog.content|slice:300|safe}}...</p><br>
+              <a class="btn btn-primary" href="/blogpost/{{blog.slug}}">Read More</a>      
+            </div>
+          </div>
+      {% endfor %}
+      <div class="pb-5">
+        {% if prev %}
+          <a href="/blog?page={{prev}}" class="btn btn-success float-left">&laquo; Previous</a>
+        {% else %}
+          <a href="#" class="btn btn-success float-left d-none">&laquo; Previous</a>
+        {% endif %}
+
+        {% if next %}
+          <a href="/blog?page={{next}}" class="btn btn-success float-right">Next &raquo;</a>
+        {% else %}
+          <a href="#" class="btn btn-success float-right d-none">Next &raquo;</a>
+        {% endif %}
+      </div>
+    </div>
+{% endblock body %}

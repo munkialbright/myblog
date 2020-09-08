@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}MyBlog | Contact{% endblock title %}
+{% block contactactive %}active{% endblock contactactive %}
+{% block searchbar %}d-none{% endblock searchbar %}
+{% block fixedfooter %}fixed-bottom{% endblock fixedfooter %}
+
+{% block body %}
+    <div class="container my-3">
+        <h1 class="text-center py-3">Contact Us</h1>
+        <!-- Success alert for sent message -->
+        {% if success %}
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <span><strong>Success!</strong> {{success}}</span>
+            </div>
+        {% endif %}
+        <form action="/contact" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" placeholder="Preferably your first and last name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email address:</label>
+                <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea class="form-control" id="message" rows="3" placeholder="Enter content of message" name="message" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+    </div>
+{% endblock body %}

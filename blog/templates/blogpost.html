@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}MyBlog | Blogpost{% endblock title %}
+{% block showfooter %}d-none{% endblock showfooter %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center">{{blog.title}}</h1>
+        <div class="my-3">
+            {{blog.content|safe}}
+        </div>
+        <p><em>Posted by {{blog.author}} on {{blog.datetime}}</em></p>
+    </div>
+{% endblock body %}
