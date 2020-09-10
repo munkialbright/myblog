@@ -124,8 +124,8 @@ def contact(request):
 def search(request):
     if request.method == 'GET':
         srch = request.GET.get('search')
-        blogs = Blog.objects.all().filter(Q(title=srch) |
-        Q(author=srch))
+        blogs = Blog.objects.all().filter(Q(title__icontains=srch) |
+        Q(author__icontains=srch))
 
         context = {'blogs': blogs, 'srch_input': srch}
 
