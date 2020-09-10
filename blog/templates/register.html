@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}MyBlog | Register{% endblock title %}
+{% block homeactive %}active{% endblock homeactive %}
+{% block searchbar %}d-none{% endblock searchbar %}
+{% block fixedfooter %}fixed-bottom{% endblock fixedfooter %}
+
+{% block body %}
+    <h1 class="text-center my-3">Register for a MyBlog account</h1>
+    <div class="container my-5">
+        <!-- Danger alert for failed password match -->
+        {% if message %}
+            <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <span><strong>Warning!</strong> {{message}}</span>
+            </div>
+        {% endif %}
+        <form action="/register" method="POST">
+        {% csrf_token %}
+            <div class="row">
+                <label for="fistName" class="col-md-6">First Name:</label>
+                <label for="lastName" class="col-md-6">Lastt Name:</label>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <input type="text" class="form-control" id="fistName" placeholder="John" name="fistName" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <input type="text" class="form-control" id="lasttName" placeholder="Doe" name="lastName" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" placeholder="Example: johndoe" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="pswd">Password:</label>
+                <input type="password" class="form-control" id="pswd" placeholder="********" name="pswd" required>
+            </div>
+            <div class="form-group">
+                <label for="c_pswd">Confirm Password:</label>
+                <input type="password" class="form-control" id="c_pswd" placeholder="********" name="c_pswd" required>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Register">
+            <p class="my-3">Already have an account? Click <a href="/login_view">Login</a>.</p>
+        </form>
+    </div>
+{% endblock body %}

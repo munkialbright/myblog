@@ -6,5 +6,22 @@
 {% block showfooter %}d-none{% endblock showfooter %}
 
 {% block body %}
-    <h1 class="text-center">Welcome to Search</h1>
+    <div class="container">
+        {% if blogs %}
+            <h1 class="text-center">Search Result for {{srch_input}}</h1>
+            {% for blog in blogs %}
+                <div class="media border p-3 my-3 rounded shadow" style="background-color:lightgray;">
+                    {% comment 'Author`s Picture' %}
+                    <img src="{% static 'img/profile.jpg' %}" alt="Author" class="mr-3 mt-3 rounded-circle" style="width:60px;">{% endcomment %}
+                    <div class="media-body">
+                    <h3><a href="/blogpost/{{blog.slug}}" class="text-dark text-decoration-none">{{blog.title}}</a> <small><i>Posted by {{blog.author}} on {{blog.datetime}}</i></small></h3>
+                    <p>{{blog.content|slice:300|safe}}...</p><br>
+                    <a class="btn btn-primary" href="/blogpost/{{blog.slug}}">Read More</a>      
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <h1 class="text-center">No Search Result for {{srch_input}}</h1>
+        {% endif %}
+    </div>
 {% endblock body %}
