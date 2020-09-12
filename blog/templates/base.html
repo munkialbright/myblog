@@ -34,9 +34,26 @@
                 <li class="nav-item {% block blogactive %}{% endblock blogactive %}">
                     <a class="nav-link" href="/blog">Blog</a>
                 </li>
-                <li class="nav-item {% block contactactive %}{% endblock contactactive %}">
-                    <a class="nav-link" href="/contact">Contact</a>
-                </li>
+                {% if authenticated %}
+                    <li class="nav-item {% block contactactive %}{% endblock contactactive %}">
+                        <a class="nav-link" href="/contact">Contact</a>
+                    </li>
+                    <!-- Dropdown -->
+                    <li class="nav-item dropdown {% block accountactive %}{% endblock accountactive %}">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                            Account
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="/profile">Account Blogs</a>
+                            <a class="dropdown-item" href="/editor">Editor</a>
+                            <a class="dropdown-item" href="/logout">Logout</a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="nav-item {% block loginactive %}{% endblock loginactive %}">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                {% endif %}
             </ul>
             <!-- Search Bar -->
             <form class="form-inline my-2 my-lg-0 {% block searchbar %}{% endblock searchbar %}" action="/search" method="GET">

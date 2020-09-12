@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}MyBlog | User's Profile{% endblock title %}
+{% block accountactive %}active{% endblock accountactive %}
+{% block searchbar %}d-none{% endblock searchbar %}
+{% block showfooter %}d-none{% endblock showfooter %}
+
+{% block body %}
+    <h1 class="text-center my-3">Account Blogs</h1>
+    <div class="container my-4">
+        <h2 class="my-3">Here are your blogs</h2>
+        {% for blog in blogs %}
+            <div class="media border p-3 my-3 rounded shadow">
+                {% comment 'Author`s Picture' %}
+                <img src="{% static 'img/profile.jpg' %}" alt="Author" class="mr-3 mt-3 rounded-circle" style="width:60px;">{% endcomment %}
+                <div class="media-body">
+                    <h3><a href="/blogpost/{{blog.slug}}" class="text-dark text-decoration-none">{{blog.title}}</a> <small><i>Posted by {{blog.author}} on {{blog.datetime}}</i></small></h3>
+                    <p>{{blog.content|slice:300|safe}}...</p><br>
+                    <a class="btn btn-primary float-left" href="/blogpost/{{blog.slug}}">Read More</a>
+                    <a class="btn btn-primary float-right" href="/editpost/{{blog.slug}}">Edit Blog</a>      
+                </div>
+                <a href="/deletepost/{{blog.slug}}" class="close" title="Delete Article">&times;</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock body %}

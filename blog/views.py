@@ -7,7 +7,11 @@ import math
 
 # Create your views here.
 def home(request):
-    return render(request, 'index.html')
+    if request.user.is_authenticated:
+        context = {'authenticated': True}
+    else:
+        context = {'authenticated': False}
+    return render(request, 'index.html', context)
 
 def register(request):
     context = {'message': ''}
@@ -33,7 +37,6 @@ def register(request):
                 context = {'message': 'Passwords don`t match!'}
                 return render(request, 'register.html', context)
 
-        
     return render(request, 'register.html')
 
 def login_view(request):
@@ -49,7 +52,7 @@ def login_view(request):
             context = {'message': 'Invalid Credentials'}
             return render(request, 'login.html', context)
 
-    return render(request, 'login.html')
+    return render(request, 'login.html', context)
 
 def blog(request):
     numPosts = 5
@@ -74,52 +77,100 @@ def blog(request):
     else:
         next = None
 
-    context = {'blogs': blogs, 'prev': prev, 'next': next}
+    if request.user.is_authenticated:
+        context = {'blogs': blogs, 'prev': prev, 'next': next, 'authenticated': True}
+    else:
+        context = {'blogs': blogs, 'prev': prev, 'next': next, 'authenticated': False}
 
     return render(request, 'blog.html', context)
 
 def editor(request):
-    context = {'success': ''}
+    if request.user.is_authenticated:
+        context = {'success': '', 'authenticated': True}
 
-    if request.method == "POST":
-        #Handle the blog form
-        title = request.POST['title']
-        author = request.POST['author']
-        slug = request.POST['b_slug']
-        content = request.POST['content']
+        if request.method == "POST":
+            #Handle the edited blog
+            title = request.POST['title']
+            author = request.POST['author']
+            slug = request.POST['b_slug']
+            content = request.POST['content']
 
-        b_article = Blog(title=title, author=author, slug=slug, content=content)
-        b_article.save()
+            b_article = Blog.objects.filter(slug=slug)
 
-        context = {'success': 'Your article has been successfully created and published.', 'slug': slug}
+            if b_article:
+                u_article = Blog.objects.filter(slug=slug).update(title=title, author=author,user_name = request.user, slug=slug, content=content)
 
-    return render(request, 'editor.html', context)
+                context = {'success': 'Your article has been successfully edited and published.', 'slug': slug, 'blog': blog, 'authenticated': True}
+            else:
+                b_article = Blog(title=title, author=author,user_name = request.user, slug=slug, content=content)
+                b_article.save()
+
+                context = {'success': 'Your article has been successfully created and published.', 'slug': slug, 'authenticated': True}
+
+        return render(request, 'editor.html', context)
+    else:
+        return redirect('login')
+
+def editpost(request, slug):
+    if request.user.is_authenticated:
+        blog = Blog.objects.filter(Q(slug=slug) & Q(user_name=request.user.id)).first()
+        context = {'success': '', 'blog': blog, 'authenticated': True}
+
+        return render(request, 'editpost.html', context)
+    else:
+        return redirect('login')
+
+def deletepost(request, slug):
+    if request.user.is_authenticated:
+        blog = Blog.objects.filter(slug=slug).delete()
+
+        return redirect('profile')
+    else:
+        return redirect('login')
 
 def blogpost(request, slug):
     blog = Blog.objects.filter(slug=slug).first()
-    context = {'blog': blog}
+
+    if request.user.is_authenticated:
+        context = {'blog': blog, 'authenticated': True}
+    else:
+        context = {'blog': blog, 'authenticated': False}
 
     #return HttpResponse(f"You are viewing {slug}")
     return render(request, 'blogpost.html', context)
 
 def contact(request):
-    context = {'success': ''}
+    if request.user.is_authenticated:
+        context = {'success': '', 'authenticated': True}
 
-    if request.method == "POST":
-        
-        #Creating variables and assigning to them content submited by the form
-        name = request.POST['name']
-        email = request.POST['email']
-        message = request.POST['message']
+        if request.method == "POST":
+            
+            #Creating variables and assigning to them content submited by the form
+            name = request.POST['name']
+            email = request.POST['email']
+            message = request.POST['message']
 
-        #Creat instance
-        contact = Contact(name=name, email=email, message=message)
-        #Save intance to the database
-        contact.save()
+            #Creat instance
+            contact = Contact(name=name, email=email, message=message)
+            #Save intance to the database
+            contact.save()
 
-        context = {'success': 'Your message has been sent. We shall reply to you via your email.'}
+            context = {'success': 'Your message has been sent. We shall reply to you via your email.'}
 
-    return render(request, 'contact.html', context)
+        return render(request, 'contact.html', context)
+    else:
+        return redirect('login')
+
+def profile(request):
+    if request.user.is_authenticated:
+        u_blog = Blog.objects.filter(user_name=request.user.id)
+        u_info = User.objects.filter(username=request.user.id).first()
+
+        context = {'blogs': u_blog, 'user_info': u_info, 'authenticated': True}
+
+        return render(request, 'profile.html', context)
+    else:
+        return redirect('login')
 
 def search(request):
     if request.method == 'GET':
@@ -127,6 +178,13 @@ def search(request):
         blogs = Blog.objects.all().filter(Q(title__icontains=srch) |
         Q(author__icontains=srch))
 
-        context = {'blogs': blogs, 'srch_input': srch}
+        if request.user.is_authenticated:
+            context = {'blogs': blogs, 'srch_input': srch, 'authenticated': True}
+        else:
+            context = {'blogs': blogs, 'srch_input': srch, 'authenticated': False}
 
     return render(request, 'search.html', context)
+
+def logout_view(request):
+    logout(request)
+    return render(request, "login.html")

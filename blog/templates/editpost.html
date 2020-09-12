@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}MyBlog | Editor{% endblock title %}
+{% block showfooter %}d-none{% endblock showfooter %}
+
+{% block body %}
+    <h1 class="text-center my-3">MyBlog Editor</h1>
+        <div class="container my-5">
+            <!-- Edit Blog form -->
+            <form action="/editor" method="POST">
+            {% csrf_token %}
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" class="form-control" id="title" placeholder="Blog Title" name="title" value="{{blog.title}}" required>
+                </div>
+                <div class="form-group">
+                    <label for="title">Author:</label>
+                    <input type="text" class="form-control" id="author" placeholder="Author's first and last name" name="author" value="{{blog.author}}" required>
+                </div>
+                <div class="form-group">
+                    <label for="slug">Blog Slug:</label>
+                    <input type="text" class="form-control" id="b_slug" placeholder="Enter a name or text to uniquely identify your blog" name="b_slug" value="{{blog.slug}}" required>
+                    <small class="text-danger">*Don't alter this blog slug</small>
+                </div>
+                <div class="form-group">
+                    <label for="content">Content:</label>
+                    <textarea name="content" id="content" cols="30" rows="10" class="form-control" placeholder="Enter the content of your article here...">{{blog.content|safe}}</textarea>
+                </div>
+
+                <input type="submit" class="btn btn-primary float-left" value="Update">
+                <a href="/deletepost/{{blog.slug}}" class="btn btn-primary float-right">Delete</a>
+            </form>
+        </div>
+
+    <script type="text/javascript" src="{% static 'js/ckeditor.js' %}"></script>
+
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#content' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+{% endblock body %}

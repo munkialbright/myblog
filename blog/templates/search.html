@@ -10,7 +10,7 @@
         {% if blogs %}
             <h1 class="text-center">Search Result for {{srch_input}}</h1>
             {% for blog in blogs %}
-                <div class="media border p-3 my-3 rounded shadow" style="background-color:lightgray;">
+                <div class="media border p-3 my-3 rounded shadow">
                     {% comment 'Author`s Picture' %}
                     <img src="{% static 'img/profile.jpg' %}" alt="Author" class="mr-3 mt-3 rounded-circle" style="width:60px;">{% endcomment %}
                     <div class="media-body">
