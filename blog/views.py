@@ -29,7 +29,7 @@ def register(request):
                 if user is not None:
                     user_authenticate = authenticate(request, username= request.POST.get("username",False), password=request.POST.get("password",False))
                     login(request,user_authenticate)  
-                    return redirect('home')
+                    return redirect('profile')
                 else:
                     context = {'message': 'Please fill all fields'}
                     return render(request, 'register.html', context)
@@ -47,7 +47,7 @@ def login_view(request):
         user = authenticate(request, username=user_id, password=password)
         if user is not None:
             login(request,user)
-            return redirect('home')
+            return redirect('profile')
         else:
             context = {'message': 'Invalid Credentials'}
             return render(request, 'login.html', context)

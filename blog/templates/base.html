@@ -10,9 +10,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 
-    {% comment 'css' %}
-        {% block css %}{% endblock css %}
-    {% endcomment %}
+    {% block css %}{% endblock css %}
 
     <title>{% block title %}{% endblock title %}</title>
 </head>

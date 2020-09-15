@@ -5,7 +5,14 @@
 {% block title %}MyBlog | User's Profile{% endblock title %}
 {% block accountactive %}active{% endblock accountactive %}
 {% block searchbar %}d-none{% endblock searchbar %}
-{% block showfooter %}d-none{% endblock showfooter %}
+
+{% block css %}
+  <style>
+    .container{
+      min-height: 70vh;
+    }
+  </style>
+{% endblock css %}
 
 {% block body %}
     <h1 class="text-center my-3">Account Blogs</h1>
