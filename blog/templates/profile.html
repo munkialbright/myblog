@@ -17,8 +17,9 @@
 {% block body %}
     <h1 class="text-center my-3">Account Blogs</h1>
     <div class="container my-4">
-        <h2 class="my-3">Here are your blogs</h2>
-        {% for blog in blogs %}
+        {% if blogs %}
+          <h2 class="my-3">Here are your blogs</h2>
+          {% for blog in blogs %}
             <div class="media border p-3 my-3 rounded shadow">
                 {% comment 'Author`s Picture' %}
                 <img src="{% static 'img/profile.jpg' %}" alt="Author" class="mr-3 mt-3 rounded-circle" style="width:60px;">{% endcomment %}
@@ -30,6 +31,9 @@
                 </div>
                 <a href="/deletepost/{{blog.slug}}" class="close" title="Delete Article">&times;</a>
             </div>
-        {% endfor %}
+          {% endfor %}
+        {% else %}
+          <h2 class="my-3">Publish an article and view it here</h2>
+        {% endif %}
     </div>
 {% endblock body %}

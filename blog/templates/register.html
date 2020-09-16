@@ -20,14 +20,12 @@
         <form action="/register" method="POST">
         {% csrf_token %}
             <div class="row">
-                <label for="fistName" class="col-md-6">First Name:</label>
-                <label for="lastName" class="col-md-6">Lastt Name:</label>
-            </div>
-            <div class="row">
                 <div class="form-group col-md-6">
+                    <label for="fistName" class="col-md-6">First Name:</label>
                     <input type="text" class="form-control" id="fistName" placeholder="John" name="fistName" required>
                 </div>
                 <div class="form-group col-md-6">
+                    <label for="lastName" class="col-md-6">Lastt Name:</label>
                     <input type="text" class="form-control" id="lasttName" placeholder="Doe" name="lastName" required>
                 </div>
             </div>
