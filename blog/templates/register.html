@@ -5,7 +5,6 @@
 {% block title %}MyBlog | Register{% endblock title %}
 {% block homeactive %}active{% endblock homeactive %}
 {% block searchbar %}d-none{% endblock searchbar %}
-{% block fixedfooter %}fixed-bottom{% endblock fixedfooter %}
 
 {% block body %}
     <h1 class="text-center my-3">Register for a MyBlog account</h1>
@@ -15,6 +14,13 @@
             <div class="alert alert-danger alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
                 <span><strong>Warning!</strong> {{message}}</span>
+            </div>
+        {% endif %}
+        <!-- Success alert for created account -->
+        {% if successful %}
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <span><strong>Success!</strong> {{successful}} <a href="/login">Login</a> to activate account.</span>
             </div>
         {% endif %}
         <form action="/register" method="POST">

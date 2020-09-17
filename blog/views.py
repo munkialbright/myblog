@@ -14,7 +14,7 @@ def home(request):
     return render(request, 'index.html', context)
 
 def register(request):
-    context = {'message': ''}
+    context = {'message': '', 'successful': ''}
     if request.method == 'POST':
         user_e = User.objects.all().filter(Q(username= request.POST.get("username",False)) | Q(email= request.POST.get("email",False)))
         if user_e:
@@ -26,13 +26,8 @@ def register(request):
                 user.first_name=request.POST.get("fistName",False)
                 user.last_name=request.POST.get("lastName",False)
                 user.save()
-                if user is not None:
-                    user_authenticate = authenticate(request, username= request.POST.get("username",False), password=request.POST.get("password",False))
-                    login(request,user_authenticate)  
-                    return redirect('profile')
-                else:
-                    context = {'message': 'Please fill all fields'}
-                    return render(request, 'register.html', context)
+                context = {'successful': 'Account has been successfully created.'}
+                return render(request, 'register.html', context)
             else:
                 context = {'message': 'Passwords don`t match!'}
                 return render(request, 'register.html', context)
