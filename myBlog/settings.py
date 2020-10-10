@@ -116,7 +116,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-#Variables for send email
+#Variables for sending email
 
 EMAIL_HOST = 'smtp.gmail.com'
 
