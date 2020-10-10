@@ -157,7 +157,7 @@ def contact(request):
             #Save intance to the database
             contact.save()
 
-            context = {'success': 'Your message has been sent. We shall reply to you via your email.'}
+            context = {'success': 'Your message has been sent. We shall reply to you via your email.', 'authenticated': True}
 
         return render(request, 'contact.html', context)
     else:
