@@ -3,6 +3,8 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from blog.models import Blog, Contact
+from django.core.mail import send_mail
+from django.conf import settings
 import math
 
 # Create your views here.
@@ -144,6 +146,11 @@ def contact(request):
             name = request.POST['name']
             email = request.POST['email']
             message = request.POST['message']
+
+            mail_subject = "My Blog (" + name + ", " + email + ")"
+        
+            #Send an email to the owner of the site
+            send_mail(mail_subject, message, email, [settings.EMAIL_HOST_USER])
 
             #Creat instance
             contact = Contact(name=name, email=email, message=message)
